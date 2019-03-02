@@ -66,9 +66,11 @@ class banker():
 
     def calcBankerSum(self):
         #TODO: implement
+        pass
     
     def calcPlayerSum(self):
         #TODO: implement
+        pass
 
     def hit(self):
         c=self.deck[0]
@@ -89,17 +91,3 @@ class banker():
         
     def playerLose(self):
         self.playerChip-=self.bet
-
-b=banker()
-print(b.getStatus())
-b.playerStand()
-print(b.getStatus())
-b.playerLose()
-print(b.getStatus())
-
-b.playerStand()
-print(b.getStatus())
-b.playerLose()
-print(b.getStatus())
-b.newPlayer()
-print(b.getStatus())
