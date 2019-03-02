@@ -82,14 +82,40 @@ class blackjack():
         return m
 
     def calcBankerSum(self):
-        #TODO: implement
-        cards=self.bankerHand
-        cards.sort()
-        
-    
+        if self.stand:
+            cards=self.bankerHand
+            cards.sort()
+            sums=[0]
+            for card in cards:
+                toadd=card
+                if card in {11,12,13}:
+                    toadd=10
+                if card!=1:
+                    for i in range(len(sums)):
+                        sums[i]+=toadd
+                else:
+                    sums=[i+j for i in sums for j in [1,11]]
+            sums=list(filter(lambda a: a<=21,sums))
+            sums.sort()
+            self.bankerHandSum=sums
+
+            
     def calcPlayerSum(self):
-        #TODO: implement
-        pass
+        cards=self.playerHand
+        cards.sort()
+        sums=[0]
+        for card in cards:
+            toadd=card
+            if card in {11,12,13}:
+                toadd=10
+            if card!=1:
+                for i in range(len(sums)):
+                    sums[i]+=toadd
+            else:
+                sums=[i+j for i in sums for j in [1,11]]
+        sums=list(filter(lambda a: a<=21,sums))
+        sums.sort()
+        self.playerHandSum=sums
 
     def hit(self):
         c=self.deck[0]
@@ -97,13 +123,23 @@ class blackjack():
         return c
 
     def bankerHit(self):
+        print("Banker Hit")
         self.bankerHand.append(self.hit())
+        self.calcBankerSum()
 
     def playerHit(self):
+        print("Player Hit")
         self.playerHand.append(self.hit())
+        self.calcPlayerSum()
+
+    def bankerHitsTo17(self):
+        while(max(self.bankerHandSum)<17):
+            self.bankerHit()
 
     def playerStand(self):
         self.stand=True
+        self.calcBankerSum()
+        self.bankerHitsTo17()
 
     def playerWin(self):
         self.playerChip+=self.bet
