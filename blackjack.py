@@ -1,6 +1,6 @@
 import random
 
-class banker():
+class blackjack():
     def __init__(self):
         self.bankerHand=[]
         self.playerHand=[]
@@ -48,7 +48,7 @@ class banker():
         return self.playerChip
 
     def getStatusMsg(self):
-        m="B["+("X" if self.stand==False else str(self.bankerHand[0]))
+        m="B["+("?" if self.stand==False else str(self.bankerHand[0]))
         for card in self.bankerHand[1:]:
             m+=(","+str(card) if (card!=1 and card<11) else(",A" if card==1 else(",J" if card==11 else(",Q" if card==12 else ",K"))))
         m+="]"
@@ -62,21 +62,21 @@ class banker():
 
     def getStatus(self):
         m="\n=========================\n"
-        m+="Banker hand:"
+        m+="Banker's Hand:"
         if not self.stand:
-            m+=" X"
+            m+=" ?"
             for card in self.bankerHand[1:]:
                 m+=(" "+(str(card) if (card!=1 and card<11) else("A" if card==1 else("J" if card==11 else("Q" if card==12 else "K")))))
         else:
             for card in self.bankerHand:
                 m+=(" "+(str(card) if (card!=1 and card<11) else("A" if card==1 else("J" if card==11 else("Q" if card==12 else "K")))))
         
-        m+=("\nBanker sum: "+str(self.bankerHandSum))
-        m+="\nPlayer hand:"
+        m+=("\nBanker's Sum: "+str(self.bankerHandSum))
+        m+="\nPlayer's Hand:"
         for card in self.playerHand:
             m+=(" "+(str(card) if (card!=1 and card<11) else("A" if card==1 else("J" if card==11 else("Q" if card==12 else "K")))))
-        m+=("\nPlayer sum: "+str(self.playerHandSum))
-        m+=("\nPlayer Remainig chip: "+str(self.playerChip)+"\nBet: "+str(self.bet))
+        m+=("\nPlayer's Sum: "+str(self.playerHandSum))
+        m+=("\nPlayer's Remainig chip: "+str(self.playerChip)+"\nBet: "+str(self.bet))
         m+=("\n"+self.getStatusMsg())
         m+="\n========================="
         return m
