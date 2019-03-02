@@ -1,10 +1,10 @@
 from blackjack import blackjack as bj
-
+import sys
 command=""
 startup=True
 while(1):
     if startup:
-        b=bj()
+        b=bj(debug=(True if ('--debug' in sys.argv) else False))
         startup=False
 
     while(not b.getEnded()):
@@ -19,7 +19,7 @@ while(1):
             print("Command illegal")
 
     while(1):
-        command=input("[R] for new game / [C] for continue / [N]: for new deck")
+        command=input("[R] for new game / [C] for continue / [N] for new deck : ")
         if command in {"R","r"}:
             b.newPlayer()
             break
