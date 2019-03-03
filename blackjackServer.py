@@ -1,6 +1,6 @@
-import random
+from blackjack import blackjack
 
-class blackjack():
+class blackjackServer(blackjack):
     def __init__(self,debug=False):
         print("\n\n***** New Player with new shuffled deck *****")
         self.bankerHand=[]
@@ -226,7 +226,7 @@ class blackjack():
                 print("Player bust")
                 self.playerLose()
             else:
-                self.playerWin() if p>b else self.playerLose()
+                self.playerWin() if p>=b else self.playerLose()
         self.ended=True
 
     def playerWin(self):
@@ -237,8 +237,4 @@ class blackjack():
     def playerLose(self):
         print("Player Lose!")
         self.playerChip-=self.bet
-        print("Remaining chip: ",self.playerChip,"\n")
-
-    def gamePush(self):
-        print("PUSH!")
         print("Remaining chip: ",self.playerChip,"\n")
