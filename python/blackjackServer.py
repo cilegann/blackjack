@@ -1,5 +1,21 @@
 from blackjack import blackjack
-
+'''
+ MSG format:
+    From server: *B[banker card1,banker card2,..]
+                 *P[player card1,banker card2,..]
+                 *C[remaining chip of player]
+                 *BET[bet]
+                 *ASK (Ask player for next move)
+                 *WIN (Player win)
+                 *LOS (Player lose)
+                 *PUS (Push)
+                 *CON (start game with remaining deck)
+                 *NEW (start game with a new deck)
+    From client:
+                 H (hit)
+                 S (stand)
+                 D (double)
+'''
 class blackjackServer(blackjack):
     def __init__(self,debug=False):
         print("\n\n***** New Player with new shuffled deck *****")
