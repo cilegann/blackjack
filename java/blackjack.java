@@ -12,6 +12,7 @@ public class blackjack{
     private int bet;
     private boolean stand;
     private boolean ended;
+    private int gameResult; //-1 for player lose, 0 for push, 1 for player win
     private ArrayList<Integer> deck;
     
     public blackjack(boolean debug){
@@ -25,7 +26,9 @@ public class blackjack{
         this.bet=20;
         this.stand=false;
         this.ended=false;
+        this.gameResult=0;
         this.deck=new ArrayList<Integer>();
+        
         for(int i=1;i<=13;i++){
             for(int j=0;j<4;j++){
                 this.deck.add(i);
@@ -54,6 +57,7 @@ public class blackjack{
         this.bet=20;
         this.stand=false;
         this.ended=false;
+        this.gameResult=0;
         if(newDeck){
             System.out.println("\n\n*** Continue with new deck ***");
             this.deck=new ArrayList<Integer>();
@@ -147,6 +151,10 @@ public class blackjack{
 
     public boolean getStand(){
         return this.stand;
+    }
+
+    public int getGameResult(){
+        return this.gameResult;
     }
 
     private void calcBankerSum(){
@@ -269,7 +277,6 @@ public class blackjack{
     private void judge(){
         System.out.println("\n  >>> Game Result <<<");
         this.stand=true;
-        this.ended=true;
         this.calcBankerSum();
         this.calcPlayerSum();
         this.print(false);
@@ -290,22 +297,26 @@ public class blackjack{
                 this.gamePush();
             }
         }
+        this.ended=true;
     }   
 
     private void playerWin(){
         System.out.println("  Player Win!");
         this.playerChip+=this.bet;
         System.out.println("  Remaining chip: "+this.playerChip+"\n");
+        this.gameResult=1;
     }
 
     private void playerLose(){
         System.out.println("  Player Lose!");
         this.playerChip-=this.bet;
         System.out.println("  Remaining chip: "+this.playerChip+"\n");
+        this.gameResult=-1;
     }
     
     private void gamePush(){
         System.out.println("  Game Push!");
         System.out.println("  Remaining chip: "+this.playerChip+"\n");
+        this.gameResult=0;
     }
 }

@@ -17,6 +17,7 @@ public class game{
                     b.playerDouble();
                 }
             }
+            int gameResult=b.gameResult();
             while(true){
                 System.out.print("[R] for new game / [C] for continue / [N] for new deck : ");
                 cmd=input.next();
