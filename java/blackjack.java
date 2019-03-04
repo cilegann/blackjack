@@ -147,7 +147,7 @@ public class blackjack{
             this.bankerHandSum.add(sums.get(0));
             if(sums.size()>1){
                 if (sums.get(1)<=21){
-                    this.bankerHandSum.add(1);
+                    this.bankerHandSum.add(sum.get(1));
                 }
             }
         }
@@ -161,12 +161,10 @@ public class blackjack{
             if(card==11 || card==12 || card==13){
                 for(int j=0;j<sums.size();j++){
                     sums.set(j,sums.get(j)+10);
-                    System.out.println("PS1:"+sums);
                 }
             }else if(card!=1){
                 for(int j=0;j<sums.size();j++){
                     sums.set(j,sums.get(j)+card);
-                    System.out.println("PS2:"+sums);
                 }
             }else{
                 int old_size=sums.size();
@@ -177,7 +175,6 @@ public class blackjack{
                 for(int j=0;j<old_size;j++){
                     sums.remove(j);
                 }
-                System.out.println("PS3:"+sums);
             }
         }
         this.playerHandSum.clear();
@@ -185,7 +182,7 @@ public class blackjack{
         this.playerHandSum.add(sums.get(0));
         if(sums.size()>1){
             if (sums.get(1)<=21){
-                this.playerHandSum.add(1);
+                this.playerHandSum.add(sum.get(1));
             }
         }
     }
