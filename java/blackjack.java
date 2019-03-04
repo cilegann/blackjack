@@ -19,7 +19,6 @@ public class blackjack{
     * Initial all variable,new player with a new deck of shuffled card
     * 
     * @param debug  Debug mode or not
-    * @return  Nothing
     */ 
     public blackjack(boolean debug){
         System.out.println("\n\n***** New Player with new shuffled deck *****");
@@ -59,7 +58,6 @@ public class blackjack{
     * Continue game
     * 
     * @param newDeck  Boolean, continue with a new deck of card or not
-    * @return  Nothing
     */ 
     public void continueGame(boolean newDeck){
 
@@ -144,7 +142,7 @@ public class blackjack{
     /** 
     * Get player's hand
     * 
-    * @return  ArrayList<Integer>, player's hand
+    * @return  ArrayList, player's hand
     */ 
     public ArrayList<Integer> getPlayerHand(){
         return this.playerHand;
@@ -153,7 +151,7 @@ public class blackjack{
     /** 
     * Get banker's hand. If player is not standed yet, the first card will be masked as -1
     * 
-    * @return  ArrayList<Integer>, banker's hand
+    * @return  ArrayList, banker's hand
     */ 
     public ArrayList<Integer> getBankerHand(){
         if(this.stand){
@@ -300,7 +298,6 @@ public class blackjack{
     /** 
     * Player action - hit
     * 
-    * @return  Nothing
     */ 
     public void playerHit(){
         System.out.println("\n  Player Hit");
@@ -315,7 +312,6 @@ public class blackjack{
     /** 
     * Player action - double
     * 
-    * @return  Nothing
     */ 
     public void playerDouble(){
         System.out.println("\n  Player Double");
@@ -330,7 +326,6 @@ public class blackjack{
     /** 
     * Player action - stand
     * 
-    * @return  Nothing
     */ 
     public void playerStand(){
         System.out.println("\n  Player Stand");

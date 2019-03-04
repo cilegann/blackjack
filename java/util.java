@@ -1,4 +1,10 @@
 public class util{
+    /** 
+    * convert card value to A 2 3 ... J Q K
+    * 
+    * @param in  card value
+    * @return String, converted String
+    */ 
     public static String cardConverter(int in){
         if(in==1){
             return "A";
