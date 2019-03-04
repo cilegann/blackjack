@@ -28,7 +28,7 @@ public class blackjack{
         this.ended=false;
         this.deck=new ArrayList<Integer>();
         for(int i=1;i<=13;i++){
-            for(int j=0;j<4;j++){
+            for(int j=0;j<2;j++){
                 this.deck.add(i);
             }
         }
@@ -59,7 +59,7 @@ public class blackjack{
             System.out.println("\n\n*** Continue with new deck ***");
             this.deck=new ArrayList<Integer>();
             for(int i=1;i<=13;i++){
-                for(int j=0;j<4;j++){
+                for(int j=0;j<2;j++){
                     this.deck.add(i);
                 }
             }
@@ -132,8 +132,20 @@ public class blackjack{
         }
     }
 
+    public int getPlayerChip(){
+        return this.playerChip;
+    }
+
+    public int getBet(){
+        return this.bet;
+    }
+
     public boolean getEnded(){
         return this.ended;
+    }
+
+    public boolean getStand(){
+        return this.stand;
     }
 
     private void calcBankerSum(){
