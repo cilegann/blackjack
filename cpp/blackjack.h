@@ -18,7 +18,7 @@ private:
     void bankerHit();
     void bankerHitTo17();
     void judge();
-    void playerwin();
+    void playerWin();
     void playerLose();
     void gamePush();
 public:
