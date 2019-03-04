@@ -122,6 +122,9 @@ class blackjack():
         m+="\n=========================\n"
         return m
 
+    def getStand(self):
+        return self.stand
+
     def getEnded(self):
         return self.ended
 
