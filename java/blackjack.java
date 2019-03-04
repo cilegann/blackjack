@@ -317,7 +317,9 @@ public class blackjack{
         System.out.println("\n  Player Double");
         this.bet*=2;
         this.playerHit();
-        this.playerStand();
+        if(!this.ended){
+            this.playerStand();
+        }
         if(!this.ended){
             this.judge();
         }
