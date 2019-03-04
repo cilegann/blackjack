@@ -1,11 +1,8 @@
-package blackjack;
-
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
-import blackjack.util.util;
 public class blackjack{
     private ArrayList<Integer> bankerHand;
     private ArrayList<Integer> playerHand;
@@ -36,6 +33,10 @@ public class blackjack{
         }
         for(int i=0;i<10;i++){
             Collections.shuffle(this.deck);
+        }
+        for(int i=0;i<2;i++){
+            this.bankerHit();
+            this.playerHit();
         }
     }
     
@@ -77,7 +78,7 @@ public class blackjack{
         }
         m.append("\n    Player's Hand:");
         for(int i=0;i<this.playerHand.size();i++){
-            m.append(" "+this.playerHand.get(i));
+            m.append(" "+ util.cardConverter( this.playerHand.get(i)));
         }
         m.append("\n  > Player's Sum:");
         for(int i=0;i<this.playerHandSum.size();i++){
@@ -136,11 +137,14 @@ public class blackjack{
                         sums.add(sums.get(j)+1);
                         sums.add(sums.get(j)+11);
                     }
+                    for(int j=0;j<old_size;j++){
+                        sums.remove(j);
+                    }
                 }
             }
             this.bankerHandSum.clear();
             Collections.sort(sums);
-            this.bankerHandSum.add(0);
+            this.bankerHandSum.add(sums.get(0));
             if(sums.size()>1){
                 if (sums.get(1)<=21){
                     this.bankerHandSum.add(1);
@@ -157,10 +161,12 @@ public class blackjack{
             if(card==11 || card==12 || card==13){
                 for(int j=0;j<sums.size();j++){
                     sums.set(j,sums.get(j)+10);
+                    System.out.println("PS1:"+sums);
                 }
             }else if(card!=1){
                 for(int j=0;j<sums.size();j++){
                     sums.set(j,sums.get(j)+card);
+                    System.out.println("PS2:"+sums);
                 }
             }else{
                 int old_size=sums.size();
@@ -168,11 +174,15 @@ public class blackjack{
                     sums.add(sums.get(j)+1);
                     sums.add(sums.get(j)+11);
                 }
+                for(int j=0;j<old_size;j++){
+                    sums.remove(j);
+                }
+                System.out.println("PS3:"+sums);
             }
         }
         this.playerHandSum.clear();
         Collections.sort(sums);
-        this.playerHandSum.add(0);
+        this.playerHandSum.add(sums.get(0));
         if(sums.size()>1){
             if (sums.get(1)<=21){
                 this.playerHandSum.add(1);
@@ -183,7 +193,7 @@ public class blackjack{
     private void bankerHit(){
         this.bankerHand.add(this.deck.remove(0));
         this.calcBankerSum();
-        if(this.bankerHandSum.get(0)!=-1 && Collections.max(this.bankerHandSum)>=21){
+        if(this.bankerHandSum.size()!=0 && Collections.max(this.bankerHandSum)>=21){
             this.judge();
         }
     }
@@ -191,14 +201,54 @@ public class blackjack{
     public void playerHit(){
         this.playerHand.add(this.deck.remove(0));
         this.calcPlayerSum();
-        if(this.playerHand
+        if( Collections.max(this.playerHandSum) >= 21){
+            this.judge();
+        }
     }
     
     public void playerDouble(){
-
+        this.bet*=2;
+        this.playerHit();
+        if(!this.ended){
+            this.judge();
+        }
     }
 
     private void judge(){
-
+        this.stand=true;
+        this.calcBankerSum();
+        this.calcPlayerSum();
+        this.print();
+        int b=Collections.max(this.bankerHandSum);
+        int p=Collections.max(this.playerHandSum);
+        if(b>21){
+            System.out.println("Banker bust");
+            this.playerWin();
+        }else if(p>21){
+            System.out.println("Player bust");
+            this.playerLose();
+        }else{
+            if(p>b){
+                this.playerWin();
+            }else if(b>p){
+                this.playerLose();
+            }else{
+                this.gamePush();
+            }
+        }
     }   
+
+    private void playerWin(){
+        System.out.println("Player Win!");
+        this.playerChip+=this.bet;
+    }
+
+    private void playerLose(){
+        System.out.println("Player Lose!");
+        this.playerChip-=this.bet;
+    }
+    
+    private void gamePush(){
+        System.out.println("Game Push!");
+    }
 }

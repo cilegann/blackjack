@@ -1,4 +1,3 @@
-package blackjack.util;
 public class util{
     public static String cardConverter(int in){
         if(in==1){
