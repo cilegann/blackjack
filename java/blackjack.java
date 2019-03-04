@@ -47,7 +47,7 @@ public class blackjack{
             this.bankerHand.add(this.deck.remove(0));
         }
         this.calcPlayerSum();
-        this.print(true);
+        System.out.println(this.getMsg(true));
         if( Collections.max(this.playerHandSum) >= 21){
             this.judge();
         }
@@ -88,19 +88,19 @@ public class blackjack{
             this.bankerHand.add(this.deck.remove(0));
         }
         this.calcPlayerSum();
-        this.print(true);
+        System.out.println(this.getMsg(true));
         if( Collections.max(this.playerHandSum) >= 21){
             this.judge();
         }
     }
 
     /** 
-    * print game status
+    * get game status
     * 
     * @param fullMsg   Boolean, chip and bet included or not
     * @return  String, game status as a formatted String
     */ 
-    public String print(boolean fullMsg){
+    public String getMsg(boolean fullMsg){
         StringBuilder m=new StringBuilder("  =========================\n");
         m.append("     Banker's Hand:");
         if(this.stand==false){
@@ -135,7 +135,6 @@ public class blackjack{
             }
         }
         m.append("\n  =========================\n");
-        System.out.println(m);
         return m.toString();
     }
 
@@ -283,7 +282,7 @@ public class blackjack{
         System.out.println("\n  Banker Hit");
         this.bankerHand.add(this.deck.remove(0));
         this.calcBankerSum();
-        this.print(false);
+        System.out.println(this.getMsg(false));
         if(this.bankerHandSum.size()!=0 && Collections.max(this.bankerHandSum)>=21){
             this.judge();
         }
@@ -303,7 +302,7 @@ public class blackjack{
         System.out.println("\n  Player Hit");
         this.playerHand.add(this.deck.remove(0));
         this.calcPlayerSum();
-        this.print(false);
+        System.out.println(this.getMsg(false));
         if( Collections.max(this.playerHandSum) >= 21){
             this.judge();
         }
@@ -333,7 +332,7 @@ public class blackjack{
         System.out.println("\n  Player Stand");
         this.stand=true;
         this.calcBankerSum();
-        this.print(false);
+        System.out.println(this.getMsg(false));
         this.bankerHitTo17();
         if(!this.ended){
             this.judge();
@@ -345,7 +344,7 @@ public class blackjack{
         this.stand=true;
         this.calcBankerSum();
         this.calcPlayerSum();
-        this.print(false);
+        System.out.println(this.getMsg(false));
         int b=Collections.max(this.bankerHandSum);
         int p=Collections.max(this.playerHandSum);
         if(b>21){
