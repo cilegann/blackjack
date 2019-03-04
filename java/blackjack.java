@@ -1,7 +1,6 @@
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
 public class blackjack{
     private ArrayList<Integer> bankerHand;
@@ -28,7 +27,7 @@ public class blackjack{
         this.ended=false;
         this.deck=new ArrayList<Integer>();
         for(int i=1;i<=13;i++){
-            for(int j=0;j<2;j++){
+            for(int j=0;j<4;j++){
                 this.deck.add(i);
             }
         }
@@ -40,7 +39,7 @@ public class blackjack{
             this.bankerHand.add(this.deck.remove(0));
         }
         this.calcPlayerSum();
-        this.print();
+        this.print(true);
         if( Collections.max(this.playerHandSum) >= 21){
             this.judge();
         }
@@ -59,7 +58,7 @@ public class blackjack{
             System.out.println("\n\n*** Continue with new deck ***");
             this.deck=new ArrayList<Integer>();
             for(int i=1;i<=13;i++){
-                for(int j=0;j<2;j++){
+                for(int j=0;j<4;j++){
                     this.deck.add(i);
                 }
             }
@@ -74,15 +73,15 @@ public class blackjack{
             this.bankerHand.add(this.deck.remove(0));
         }
         this.calcPlayerSum();
-        this.print();
+        this.print(true);
         if( Collections.max(this.playerHandSum) >= 21){
             this.judge();
         }
     }
 
-    public String print(){
-        StringBuilder m=new StringBuilder("=========================\n");
-        m.append("    Banker's Hand:");
+    public String print(boolean fullMsg){
+        StringBuilder m=new StringBuilder("  =========================\n");
+        m.append("     Banker's Hand:");
         if(this.stand==false){
             m.append(" ?");
         }else{
@@ -91,28 +90,30 @@ public class blackjack{
         for(int i=1;i<this.bankerHand.size();i++){
             m.append(" "+util.cardConverter(this.bankerHand.get(i)));
         }
-        m.append("\n  > Banker's Sum:");
+        m.append("\n   > Banker's Sum:");
         for(int i=0;i<this.bankerHandSum.size();i++){
             m.append(" "+this.bankerHandSum.get(i));
         }
-        m.append("\n    Player's Hand:");
+        m.append("\n     Player's Hand:");
         for(int i=0;i<this.playerHand.size();i++){
             m.append(" "+ util.cardConverter( this.playerHand.get(i)));
         }
-        m.append("\n  > Player's Sum:");
+        m.append("\n   > Player's Sum:");
         for(int i=0;i<this.playerHandSum.size();i++){
             m.append(" "+this.playerHandSum.get(i));
         }
-        m.append("\n    Player's Remaining chip: "+this.playerChip);
-        m.append("\n    Bet: "+this.bet);
+        if(fullMsg){
+            m.append("\n     Player's Remaining chip: "+this.playerChip);
+            m.append("\n     Bet: "+this.bet);
+        }
         if(this.debug){
-            m.append("\n    Deck length: "+this.deck.size());
-            m.append("\n    Deck:");
+            m.append("\n     Deck length: "+this.deck.size());
+            m.append("\n     Deck:");
             for(int i=0;i<this.deck.size();i++){
                 m.append(" "+util.cardConverter(this.deck.get(i)));
             }
         }
-        m.append("\n=========================\n");
+        m.append("\n  =========================\n");
         System.out.println(m);
         return m.toString();
     }
@@ -219,10 +220,10 @@ public class blackjack{
     }
     
     private void bankerHit(){
-        System.out.println("\nBanker Hit");
+        System.out.println("\n  Banker Hit");
         this.bankerHand.add(this.deck.remove(0));
         this.calcBankerSum();
-        this.print();
+        this.print(false);
         if(this.bankerHandSum.size()!=0 && Collections.max(this.bankerHandSum)>=21){
             this.judge();
         }
@@ -235,17 +236,17 @@ public class blackjack{
     }
 
     public void playerHit(){
-        System.out.println("\nPlayer Hit");
+        System.out.println("\n  Player Hit");
         this.playerHand.add(this.deck.remove(0));
         this.calcPlayerSum();
-        this.print();
+        this.print(false);
         if( Collections.max(this.playerHandSum) >= 21){
             this.judge();
         }
     }
     
     public void playerDouble(){
-        System.out.println("\nPlayer Double");
+        System.out.println("\n  Player Double");
         this.bet*=2;
         this.playerHit();
         this.playerStand();
@@ -255,9 +256,10 @@ public class blackjack{
     }
 
     public void playerStand(){
-        System.out.println("\nPlayer Stand");
+        System.out.println("\n  Player Stand");
         this.stand=true;
         this.calcBankerSum();
+        this.print(false);
         this.bankerHitTo17();
         if(!this.ended){
             this.judge();
@@ -265,19 +267,19 @@ public class blackjack{
     }
 
     private void judge(){
-        System.out.println("\n>>> Game Result <<<");
+        System.out.println("\n  >>> Game Result <<<");
         this.stand=true;
         this.ended=true;
         this.calcBankerSum();
         this.calcPlayerSum();
-        this.print();
+        this.print(false);
         int b=Collections.max(this.bankerHandSum);
         int p=Collections.max(this.playerHandSum);
         if(b>21){
-            System.out.println("Banker bust");
+            System.out.println("  Banker bust");
             this.playerWin();
         }else if(p>21){
-            System.out.println("Player bust");
+            System.out.println("  Player bust");
             this.playerLose();
         }else{
             if(p>b){
@@ -291,19 +293,19 @@ public class blackjack{
     }   
 
     private void playerWin(){
-        System.out.println("Player Win!");
+        System.out.println("  Player Win!");
         this.playerChip+=this.bet;
-        System.out.println("Remaining chip: "+this.playerChip+"\n");
+        System.out.println("  Remaining chip: "+this.playerChip+"\n");
     }
 
     private void playerLose(){
-        System.out.println("Player Lose!");
+        System.out.println("  Player Lose!");
         this.playerChip-=this.bet;
-        System.out.println("Remaining chip: "+this.playerChip+"\n");
+        System.out.println("  Remaining chip: "+this.playerChip+"\n");
     }
     
     private void gamePush(){
-        System.out.println("Game Push!");
-        System.out.println("Remaining chip: "+this.playerChip+"\n");
+        System.out.println("  Game Push!");
+        System.out.println("  Remaining chip: "+this.playerChip+"\n");
     }
 }
