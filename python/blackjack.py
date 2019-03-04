@@ -12,6 +12,7 @@ class blackjack():
         self.bet=20
         self.stand=False
         self.ended=False
+        self.gameResult=0
         self.deck=[i+1 for i in range(13) for j in range(4)]
         for i in range(5):
             self.shuffleDeck()
@@ -19,7 +20,7 @@ class blackjack():
             self.bankerHand.append(self.hit())
             self.playerHand.append(self.hit())
         self.calcPlayerSum()
-        print(self.getStatus())
+        print(self.getMsg())
         if max(self.playerHandSum)==21:
             self.judge()
             
@@ -34,6 +35,7 @@ class blackjack():
         self.bet=20
         self.stand=False
         self.ended=False
+        self.gameResult=0
         if(self.playerChip<self.bet):
             print("Chip not enough for bet, end game.")
             self.ended=True
@@ -49,7 +51,7 @@ class blackjack():
             self.bankerHand.append(self.hit())
             self.playerHand.append(self.hit())
         self.calcPlayerSum()
-        print(self.getStatus())
+        print(self.getMsg())
         if max(self.playerHandSum)==21:
             self.judge()
        
@@ -79,7 +81,7 @@ class blackjack():
         self.calcPlayerSum()
         return self.playerHandSum
 
-    def getStatusMsg(self):
+    def getStatus(self):
         m="B["+("?" if self.stand==False else str(self.bankerHand[0]))
         for card in self.bankerHand[1:]:
             m+=(","+str(card) if (card!=1 and card<11) else(",A" if card==1 else(",J" if card==11 else(",Q" if card==12 else ",K"))))
@@ -92,7 +94,7 @@ class blackjack():
         m+=("BET["+str(self.bet)+"]")
         return m
 
-    def getStatus(self,middle=True):
+    def getMsg(self,fullMsg=False):
         m="=========================\n"
         m+="    Banker's Hand:"
         if not self.stand:
@@ -102,28 +104,20 @@ class blackjack():
         else:
             for card in self.bankerHand:
                 m+=(" "+(str(card) if (card!=1 and card<11) else("A" if card==1 else("J" if card==11 else("Q" if card==12 else "K")))))
-        if middle:
-            m+=("\n  > Banker's Sum: "+str(self.bankerHandSum))
-        else:
-            if self.debug:
-                m+=("\n  > Banker's Sum: "+str(self.bankerHandSum))
-            m+=("\n  > Banker's Sum: "+str(max(self.bankerHandSum)))
+        m+=("\n  > Banker's Sum: "+str(self.bankerHandSum))
+        
         m+="\n    Player's Hand:"
         for card in self.playerHand:
             m+=(" "+(str(card) if (card!=1 and card<11) else("A" if card==1 else("J" if card==11 else("Q" if card==12 else "K")))))
-        if middle:
-            m+=("\n  > Player's Sum: "+str(self.playerHandSum))
-        else:
-            if self.debug:
-                m+=("\n  > Player's Sum: "+str(self.playerHandSum))
-            m+=("\n  > Player's Sum: "+str(max(self.playerHandSum)))
-        if middle:
+        m+=("\n  > Player's Sum: "+str(self.playerHandSum))
+        
+        if fullMsg:
             m+=("\n    Player's Remainig chip: "+str(self.playerChip)+"\n    Bet: "+str(self.bet))
         
-            if self.debug:
-                m+=("\n    MSG: "+self.getStatusMsg())
-                m+=("\n    Deck Length: "+str(len(self.deck)))
-                m+=("\n    Deck: "+str(self.deck))
+        if self.debug:
+            m+=("\n    MSG: "+self.getStatus())
+            m+=("\n    Deck Length: "+str(len(self.deck)))
+            m+=("\n    Deck: "+str(self.deck))
 
         m+="\n=========================\n"
         return m
@@ -131,6 +125,9 @@ class blackjack():
     def getEnded(self):
         return self.ended
 
+    def getGameResult(self):
+        return self.gameResult
+        
     def calcBankerSum(self):
         if self.stand:
             cards=self.bankerHand
@@ -179,7 +176,7 @@ class blackjack():
         print("\nBanker Hit")
         self.bankerHand.append(self.hit())
         self.calcBankerSum()
-        print(self.getStatus())
+        print(self.getMsg())
         if self.bankerHandSum!="?" and max(self.bankerHandSum)>=21:
             self.judge()
 
@@ -187,7 +184,7 @@ class blackjack():
         print("\nPlayer Hit")
         self.playerHand.append(self.hit())
         self.calcPlayerSum()
-        print(self.getStatus())
+        print(self.getMsg())
         if max(self.playerHandSum)>=21:
             self.judge()
 
@@ -199,7 +196,7 @@ class blackjack():
         print("\nPlayer Stand")
         self.stand=True
         self.calcBankerSum()
-        print(self.getStatus())
+        print(self.getMsg())
         self.bankerHitsTo17()
         if not self.ended:
             self.judge()
@@ -218,7 +215,7 @@ class blackjack():
         self.calcPlayerSum()
         b=max(self.bankerHandSum)
         p=max(self.playerHandSum)
-        print(self.getStatus(middle=False))
+        print(self.getMsg(fullMsg=True))
         if b>21:
             print("Banker bust")
             self.playerWin()
@@ -233,13 +230,16 @@ class blackjack():
     def playerWin(self):
         print("Player Win!")
         self.playerChip+=self.bet
+        self.gameResult=1
         print("Remaining chip: ",self.playerChip,"\n")
     
     def playerLose(self):
         print("Player Lose!")
         self.playerChip-=self.bet
+        self.gameResult=-1
         print("Remaining chip: ",self.playerChip,"\n")
 
     def gamePush(self):
         print("PUSH!")
+        self.gameResult=0
         print("Remaining chip: ",self.playerChip,"\n")
