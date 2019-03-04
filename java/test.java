@@ -2,8 +2,10 @@ import java.util.*;
 import java.lang.*;
 public class test{
     public static void main(String[] argv){
-        blackjack b=new blackjack(true);
-        b.print();
+        for(int i=0;i<argv.length;i++){
+            System.out.println(argv[i]);
+        }
+        System.out.println(Arrays.stream(argv).anyMatch("--debug"::equals));
     }
     
 }

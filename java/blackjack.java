@@ -16,6 +16,7 @@ public class blackjack{
     private ArrayList<Integer> deck;
     
     public blackjack(boolean debug){
+        System.out.println("\n\n***** New Player with new shuffled deck *****");
         this.bankerHand=new ArrayList<Integer>();
         this.playerHand=new ArrayList<Integer>();
         this.debug=debug;
@@ -35,12 +36,18 @@ public class blackjack{
             Collections.shuffle(this.deck);
         }
         for(int i=0;i<2;i++){
-            this.bankerHit();
-            this.playerHit();
+            this.playerHand.add(this.deck.remove(0));
+            this.bankerHand.add(this.deck.remove(0));
+        }
+        this.calcPlayerSum();
+        this.print();
+        if( Collections.max(this.playerHandSum) >= 21){
+            this.judge();
         }
     }
     
     public void continueGame(boolean newDeck){
+
         this.bankerHand=new ArrayList<Integer>();
         this.playerHand=new ArrayList<Integer>();
         this.bankerHandSum=new ArrayList<Integer>();
@@ -49,6 +56,7 @@ public class blackjack{
         this.stand=false;
         this.ended=false;
         if(newDeck){
+            System.out.println("\n\n*** Continue with new deck ***");
             this.deck=new ArrayList<Integer>();
             for(int i=1;i<=13;i++){
                 for(int j=0;j<4;j++){
@@ -57,7 +65,18 @@ public class blackjack{
             }
             for(int i=0;i<10;i++){
                 Collections.shuffle(this.deck);
-            }
+            }   
+        }else{
+            System.out.println("\n\n*** Continue with original deck ***");
+        }
+        for(int i=0;i<2;i++){
+            this.playerHand.add(this.deck.remove(0));
+            this.bankerHand.add(this.deck.remove(0));
+        }
+        this.calcPlayerSum();
+        this.print();
+        if( Collections.max(this.playerHandSum) >= 21){
+            this.judge();
         }
     }
 
@@ -147,7 +166,7 @@ public class blackjack{
             this.bankerHandSum.add(sums.get(0));
             if(sums.size()>1){
                 if (sums.get(1)<=21){
-                    this.bankerHandSum.add(sum.get(1));
+                    this.bankerHandSum.add(sums.get(1));
                 }
             }
         }
@@ -182,37 +201,61 @@ public class blackjack{
         this.playerHandSum.add(sums.get(0));
         if(sums.size()>1){
             if (sums.get(1)<=21){
-                this.playerHandSum.add(sum.get(1));
+                this.playerHandSum.add(sums.get(1));
             }
         }
     }
     
     private void bankerHit(){
+        System.out.println("\nBanker Hit");
         this.bankerHand.add(this.deck.remove(0));
         this.calcBankerSum();
+        this.print();
         if(this.bankerHandSum.size()!=0 && Collections.max(this.bankerHandSum)>=21){
             this.judge();
         }
     }
 
+    private void bankerHitTo17(){
+        while(Collections.max(this.bankerHandSum)<17){
+            this.bankerHit();
+        }
+    }
+
     public void playerHit(){
+        System.out.println("\nPlayer Hit");
         this.playerHand.add(this.deck.remove(0));
         this.calcPlayerSum();
+        this.print();
         if( Collections.max(this.playerHandSum) >= 21){
             this.judge();
         }
     }
     
     public void playerDouble(){
+        System.out.println("\nPlayer Double");
         this.bet*=2;
         this.playerHit();
+        this.playerStand();
+        if(!this.ended){
+            this.judge();
+        }
+    }
+
+    public void playerStand(){
+        System.out.println("\nPlayer Stand");
+        this.stand=true;
+        this.calcBankerSum();
+        this.bankerHitTo17();
         if(!this.ended){
             this.judge();
         }
     }
 
     private void judge(){
+        System.out.println("\n>>> Game Result <<<");
         this.stand=true;
+        this.ended=true;
         this.calcBankerSum();
         this.calcPlayerSum();
         this.print();
@@ -238,14 +281,17 @@ public class blackjack{
     private void playerWin(){
         System.out.println("Player Win!");
         this.playerChip+=this.bet;
+        System.out.println("Remaining chip: "+this.playerChip+"\n");
     }
 
     private void playerLose(){
         System.out.println("Player Lose!");
         this.playerChip-=this.bet;
+        System.out.println("Remaining chip: "+this.playerChip+"\n");
     }
     
     private void gamePush(){
         System.out.println("Game Push!");
+        System.out.println("Remaining chip: "+this.playerChip+"\n");
     }
 }
