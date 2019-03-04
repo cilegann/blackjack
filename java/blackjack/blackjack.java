@@ -2,6 +2,9 @@ package blackjack;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+
+import javax.swing.text.DefaultStyledDocument.ElementSpec;
+
 import blackjack.util.util;
 public class blackjack{
     private ArrayList<Integer> bankerHand;
@@ -34,11 +37,29 @@ public class blackjack{
         for(int i=0;i<10;i++){
             Collections.shuffle(this.deck);
         }
-        for(int i=0;i<this.deck.size();i++){
-            System.out.print(util.cardConverter(this.deck.get(i))+" ");
-        }
     }
     
+    public void continueGame(boolean newDeck){
+        this.bankerHand=new ArrayList<Integer>();
+        this.playerHand=new ArrayList<Integer>();
+        this.bankerHandSum=new ArrayList<Integer>();
+        this.playerHandSum=new ArrayList<Integer>();
+        this.bet=20;
+        this.stand=false;
+        this.ended=false;
+        if(newDeck){
+            this.deck=new ArrayList<Integer>();
+            for(int i=1;i<=13;i++){
+                for(int j=0;j<4;j++){
+                    this.deck.add(i);
+                }
+            }
+            for(int i=0;i<10;i++){
+                Collections.shuffle(this.deck);
+            }
+        }
+    }
+
     public String print(){
         StringBuilder m=new StringBuilder("=========================\n");
         m.append("    Banker's Hand:");
@@ -46,9 +67,9 @@ public class blackjack{
             m.append(" ?");
         }else{
             m.append(" "+util.cardConverter(this.bankerHand.get(0)));
-            for(int i=1;i<this.bankerHand.size();i++){
-                m.append(" "+util.cardConverter(this.bankerHand.get(i)));
-            }
+        }
+        for(int i=1;i<this.bankerHand.size();i++){
+            m.append(" "+util.cardConverter(this.bankerHand.get(i)));
         }
         m.append("\n  > Banker's Sum:");
         for(int i=0;i<this.bankerHandSum.size();i++){
@@ -71,8 +92,113 @@ public class blackjack{
                 m.append(" "+util.cardConverter(this.deck.get(i)));
             }
         }
-        m.append("\n=========================\n")
+        m.append("\n=========================\n");
         System.out.println(m);
         return m.toString();
     }
+
+    public ArrayList<Integer> getPlayerHand(){
+        return this.playerHand;
+    }
+    
+    public ArrayList<Integer> getBankerHand(){
+        if(this.stand){
+            return this.bankerHand;
+        }else{
+            ArrayList<Integer> r = new ArrayList<Integer>();
+            r.add(-1);
+            r.add(this.bankerHand.get(1));
+            return r;
+        }
+    }
+
+    public boolean getEnded(){
+        return this.ended;
+    }
+
+    private void calcBankerSum(){
+        if(this.stand){
+            ArrayList<Integer> sums=new ArrayList<Integer>();
+            sums.add(0);
+            for(int i=0;i<this.bankerHand.size();i++){
+                int card=this.bankerHand.get(i);
+                if(card==11 || card==12 || card==13){
+                    for(int j=0;j<sums.size();j++){
+                        sums.set(j,sums.get(j)+10);
+                    }
+                }else if(card!=1){
+                    for(int j=0;j<sums.size();j++){
+                        sums.set(j,sums.get(j)+card);
+                    }
+                }else{
+                    int old_size=sums.size();
+                    for(int j=0;j<old_size;j++){
+                        sums.add(sums.get(j)+1);
+                        sums.add(sums.get(j)+11);
+                    }
+                }
+            }
+            this.bankerHandSum.clear();
+            Collections.sort(sums);
+            this.bankerHandSum.add(0);
+            if(sums.size()>1){
+                if (sums.get(1)<=21){
+                    this.bankerHandSum.add(1);
+                }
+            }
+        }
+    }
+
+    private void calcPlayerSum(){
+        ArrayList<Integer> sums=new ArrayList<Integer>();
+        sums.add(0);
+        for(int i=0;i<this.playerHand.size();i++){
+            int card=this.playerHand.get(i);
+            if(card==11 || card==12 || card==13){
+                for(int j=0;j<sums.size();j++){
+                    sums.set(j,sums.get(j)+10);
+                }
+            }else if(card!=1){
+                for(int j=0;j<sums.size();j++){
+                    sums.set(j,sums.get(j)+card);
+                }
+            }else{
+                int old_size=sums.size();
+                for(int j=0;j<old_size;j++){
+                    sums.add(sums.get(j)+1);
+                    sums.add(sums.get(j)+11);
+                }
+            }
+        }
+        this.playerHandSum.clear();
+        Collections.sort(sums);
+        this.playerHandSum.add(0);
+        if(sums.size()>1){
+            if (sums.get(1)<=21){
+                this.playerHandSum.add(1);
+            }
+        }
+    }
+    
+    private void bankerHit(){
+        this.bankerHand.add(this.deck.remove(0));
+        this.calcBankerSum();
+        if(this.bankerHandSum.get(0)!=-1 && Collections.max(this.bankerHandSum)>=21){
+            this.judge();
+        }
+    }
+
+    public void playerHit(){
+        this.playerHand.add(this.deck.remove(0));
+        this.calcPlayerSum();
+        if(this.playerHand
+    }
+    
+    public void playerDouble(){
+
+    }
+
+    private void judge(){
+
+    }   
 }

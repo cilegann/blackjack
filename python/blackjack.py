@@ -13,8 +13,8 @@ class blackjack():
         self.stand=False
         self.ended=False
         self.deck=[i+1 for i in range(13) for j in range(4)]
-        self.shuffleDeck()
-        self.shuffleDeck()
+        for i in range(5):
+            self.shuffleDeck()
         for i in range(2):
             self.bankerHand.append(self.hit())
             self.playerHand.append(self.hit())
@@ -41,8 +41,8 @@ class blackjack():
         if newDeck:
             print("\n\n*** Continue with new deck ***")
             self.deck=[i+1 for i in range(13) for j in range(4)]
-            self.shuffleDeck()
-            self.shuffleDeck()
+            for i in range(5):
+                self.shuffleDeck()
         else:
             print("\n\n*** Continue with original deck ***")
         for i in range(2):
@@ -208,7 +208,8 @@ class blackjack():
         print("\nPlayer Double")
         self.bet*=2
         self.playerHit()
-        self.playerStand()
+        if(not self.ended):
+            self.playerStand()
 
     def judge(self):
         print("\n>>> Game Result <<<")
@@ -226,7 +227,7 @@ class blackjack():
                 print("Player bust")
                 self.playerLose()
             else:
-                self.playerWin() if p>b else self.playerLose()
+                self.playerWin() if p>b else(self.playerLose() if p<b else self.gamePush())
         self.ended=True
 
     def playerWin(self):
