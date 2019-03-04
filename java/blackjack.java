@@ -14,7 +14,13 @@ public class blackjack{
     private boolean ended;
     private int gameResult; //-1 for player lose, 0 for push, 1 for player win
     private ArrayList<Integer> deck;
-    
+
+    /** 
+    * Initial all variable,new player with a new deck of shuffled card
+    * 
+    * @param debug  Debug mode or not
+    * @return  Nothing
+    */ 
     public blackjack(boolean debug){
         System.out.println("\n\n***** New Player with new shuffled deck *****");
         this.bankerHand=new ArrayList<Integer>();
@@ -48,6 +54,13 @@ public class blackjack{
         }
     }
     
+
+    /** 
+    * Continue game
+    * 
+    * @param newDeck  Boolean, continue with a new deck of card or not
+    * @return  Nothing
+    */ 
     public void continueGame(boolean newDeck){
 
         this.bankerHand=new ArrayList<Integer>();
@@ -83,6 +96,12 @@ public class blackjack{
         }
     }
 
+    /** 
+    * print game status
+    * 
+    * @param fullMsg   Boolean, chip and bet included or not
+    * @return  String, game status as a formatted String
+    */ 
     public String print(boolean fullMsg){
         StringBuilder m=new StringBuilder("  =========================\n");
         m.append("     Banker's Hand:");
@@ -122,10 +141,20 @@ public class blackjack{
         return m.toString();
     }
 
+    /** 
+    * Get player's hand
+    * 
+    * @return  ArrayList<Integer>, player's hand
+    */ 
     public ArrayList<Integer> getPlayerHand(){
         return this.playerHand;
     }
     
+    /** 
+    * Get banker's hand. If player is not standed yet, the first card will be masked as -1
+    * 
+    * @return  ArrayList<Integer>, banker's hand
+    */ 
     public ArrayList<Integer> getBankerHand(){
         if(this.stand){
             return this.bankerHand;
@@ -137,22 +166,47 @@ public class blackjack{
         }
     }
 
+    /** 
+    * Get player's remaining chip
+    * 
+    * @return  Int, player's remaining chip
+    */ 
     public int getPlayerChip(){
         return this.playerChip;
     }
 
+    /** 
+    * Get bet
+    * 
+    * @return  Int, bet on desk
+    */ 
     public int getBet(){
         return this.bet;
     }
 
+    /** 
+    * Get game status - end or not
+    * 
+    * @return  Boolean, whether the game is ended or not
+    */ 
     public boolean getEnded(){
         return this.ended;
     }
 
+    /** 
+    * Get game status - standed or not
+    * 
+    * @return  Boolean, whether the player is standed
+    */ 
     public boolean getStand(){
         return this.stand;
     }
 
+    /** 
+    * Get game result
+    * 
+    * @return  Int, -1 for player lose, 0 for push, 1 for player win
+    */ 
     public int getGameResult(){
         return this.gameResult;
     }
@@ -243,6 +297,11 @@ public class blackjack{
         }
     }
 
+    /** 
+    * Player action - hit
+    * 
+    * @return  Nothing
+    */ 
     public void playerHit(){
         System.out.println("\n  Player Hit");
         this.playerHand.add(this.deck.remove(0));
@@ -253,6 +312,11 @@ public class blackjack{
         }
     }
     
+    /** 
+    * Player action - double
+    * 
+    * @return  Nothing
+    */ 
     public void playerDouble(){
         System.out.println("\n  Player Double");
         this.bet*=2;
@@ -263,6 +327,11 @@ public class blackjack{
         }
     }
 
+    /** 
+    * Player action - stand
+    * 
+    * @return  Nothing
+    */ 
     public void playerStand(){
         System.out.println("\n  Player Stand");
         this.stand=true;
