@@ -230,7 +230,7 @@ public class blackjack{
                         sums.add(sums.get(j)+11);
                     }
                     for(int j=0;j<old_size;j++){
-                        sums.remove(j);
+                        sums.remove(0);
                     }
                 }
             }
@@ -265,7 +265,7 @@ public class blackjack{
                     sums.add(sums.get(j)+11);
                 }
                 for(int j=0;j<old_size;j++){
-                    sums.remove(j);
+                    sums.remove(0);
                 }
             }
         }
