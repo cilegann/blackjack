@@ -180,7 +180,7 @@ class blackjack():
         self.bankerHand.append(self.hit())
         self.calcBankerSum()
         print(self.getStatus())
-        if self.bankerHandSum!="?" and min(self.bankerHandSum)>=21:
+        if self.bankerHandSum!="?" and max(self.bankerHandSum)>=21:
             self.judge()
 
     def playerHit(self):
@@ -188,7 +188,7 @@ class blackjack():
         self.playerHand.append(self.hit())
         self.calcPlayerSum()
         print(self.getStatus())
-        if min(self.playerHandSum)>=21:
+        if max(self.playerHandSum)>=21:
             self.judge()
 
     def bankerHitsTo17(self):
